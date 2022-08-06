@@ -84,14 +84,16 @@ contract InnoBank {
         require(voted[msg.sender][_reqId]==false,"You have already voted.");
         voted[msg.sender][_reqId]=true;
         requestDetail[_reqId].support++;
-        if(requestDetail[_reqId].support >=  totalVoters/2 ){
+        if(requestDetail[_reqId].support >  totalVoters/2 ){
             transferMoney(_reqId);
         }
     }
 
     function getRequestDetails(uint _reqId)public view returns(Request memory){
         Request memory data = requestDetail[_reqId];
-        data.requestedBy=address(0);
+        if(data.age==0){
+            data.requestedBy=address(0);
+        }
         return data;
     }
 
