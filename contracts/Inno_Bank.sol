@@ -19,7 +19,6 @@ pragma solidity >=0.7.0 <0.9.0;
 contract InnoBank {
 
     uint totalVoters;
-    uint reqId;
     mapping(address => bool) public voter;
     mapping(address => uint256) public donated;
     mapping(address => uint256) public received;
@@ -34,7 +33,7 @@ contract InnoBank {
 
     // become a voter in the bank
     function becomeAVoter() public payable{
-        require(msg.value>=5 ether,"You need to deposit at least 5 ethers to become a voter.");
+        require(msg.value>=0.1 ether,"You need to deposit at least 5 ethers to become a voter.");
         totalVoters++;
         voter[msg.sender]=true;
     }
@@ -50,10 +49,10 @@ contract InnoBank {
     }
 
 
-    // make a request anonymously. The limit to ask for fund is upto 50 ethers.
-    function makeRequest(string memory idea, uint funds)public returns(uint){
-        if(funds>50000000000000000000){funds=50000000000000000000;}
-        reqId++;
+    // make a request anonymously. The limit to ask for fund is upto 10 ethers.
+    function makeRequest(string memory idea, uint funds,uint reqId)public returns(uint){
+        require(requestDetail[reqId].funds==0,"request id already exists");
+        if(funds>10000000000000000000){funds=10000000000000000000;}
         requestDetail[reqId]=Request(msg.sender,idea,funds,0);
         return reqId;
     }
